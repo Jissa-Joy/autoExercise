@@ -13,6 +13,7 @@ constructor(page)
     this.emailLogin = page.locator('//*[@class="login-form"]//*[@type = "email"]');
     this.pwLogin = page.locator('//*[@class="login-form"]//*[@type = "password"]');
     this.loginButton = page.getByRole('Button', {name:"Login"});
+    this.errorMessage = page.locator("//p[normalize-space()='Your email or password is incorrect!']")
 }
 
 async verifyNewUserSignuptext()
@@ -56,5 +57,9 @@ async clickLoginButton()
 {
     await expect(this.loginButton).toBeEnabled();
     await this.loginButton.click();
+}
+
+async verifyErrorMessage(){
+    await expect(this.errorMessage).toBeVisible();
 }
 }
