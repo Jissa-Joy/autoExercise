@@ -14,6 +14,10 @@ constructor(page)
     this.pwLogin = page.locator('//*[@class="login-form"]//*[@type = "password"]');
     this.loginButton = page.getByRole('Button', {name:"Login"});
     this.errorMessage = page.locator("//p[normalize-space()='Your email or password is incorrect!']")
+     //updated locators for logout page
+    this.logoutButton = page.locator(".fa.fa-lock");
+    this.signupErrorMessage = page.locator("//p[normalize-space()='Email Address already exist!']")
+
 }
 
 async verifyNewUserSignuptext()
@@ -61,5 +65,15 @@ async clickLoginButton()
 
 async verifyErrorMessage(){
     await expect(this.errorMessage).toBeVisible();
+}
+
+async clickLogoutButton()
+{
+    await this.logoutButton.click();
+}
+
+async verifySignupError()
+{
+    await expect(this.signupErrorMessage).toBeVisible();
 }
 }

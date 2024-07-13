@@ -4,12 +4,12 @@ const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
 
 
-test('Test Case 2: Login User with correct email and password', async () => {
+test('Test Case 4: Logout User', async () => {
 
     //Test data
-let Email = "VR01@gmail.com";
-let Pw = "VRpw01";
-let Name = "VR01";
+let Email = "jjoy@kjr.com";
+let Pw = "test123";
+let Name = "jj";
     
 //1. Launch Browser
 const browser = await chromium.launch();
@@ -41,21 +41,22 @@ await signupLogin.clickLoginButton();
 //8. Verify that 'Logged in as username' is visible
 await homePage.VerifyUserLogin(Name);
 
-//9. Click 'Delete Account' button
-await homePage.clickDeleteAccountButton();
+//9. Click Logout button
 
-//10. Verify that 'ACCOUNT DELETED!' is visible
-await expect(page.getByText("Account Deleted!")).toBeVisible();
-await page.locator('.btn.btn-primary').click();
+await signupLogin.clickLogoutButton();
+
+//10. Verify that user is navigated to login page
+
+await homePage.navigateLoginPage();
  
 })
 
-test('Test Case 3: Login User with incorrect email and password', async () => {
+test.only('Test Case 5: Register User with existing email', async () => {
 
     //Test data
-let Email = "VR@gmail.com";
-let Pw = "VRpw01";
-let Name = "VR01";
+let Email = "jjoy@kjr.com";
+let Pw = "test123";
+let Name = "jj";
     
 //1. Launch Browser
 const browser = await chromium.launch();
@@ -71,22 +72,20 @@ const browser = await chromium.launch();
 //3. Verify that home page is visible successfully
 await homePage.verifyHomePageLaunched();
 
-//4. Click on 'Signup / Login' button
+//4. click on SignUp/LogIn option 
 await homePage.clickSignupLogin();
 
-//5. Verify 'Login to your account' is visible
-await signupLogin.verifyLoginToYourAccountText();
+//5. Verify 'New User Signup!' is visible
+await signupLogin.verifyNewUserSignuptext();
 
-//6. Enter incorrect email address and password
-await signupLogin.fillLoginEmail(Email);
-await signupLogin.fillLoginPassword(Pw);
+//6. Enter name and already registered email address
+await signupLogin.enterName(Name);
+await signupLogin.enterEmailAddress(Email);
 
-//7. Click 'login' button
-await signupLogin.clickLoginButton();
+//7. Click Signup button
+await signupLogin.clickSignupButton();
 
-//8.  Verify error message for invalid credentials
-await signupLogin.verifyErrorMessage();
+//8.Verify error 'Email Address already exist' is visible
+await signupLogin.verifySignupError();
 
- 
 })
-

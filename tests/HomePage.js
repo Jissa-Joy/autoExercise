@@ -33,6 +33,11 @@ async clickDeleteAccountButton()
 {
     await this.deleteAccountButton.click();
 }
+//Locators for Logout user and Register user with existing email pages (TC4 & TC5)
 
+async navigateLoginPage()
+{
+    await this.page.goto('https://www.automationexercise.com/login'); 
+}
 
 }
