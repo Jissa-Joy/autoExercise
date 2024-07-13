@@ -2,6 +2,8 @@ const { test, expect } = require('@playwright/test');
 const {chromium} = require('playwright');
 const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
+const {TestcasesPage} =require('./TestcasesPage');          //maybe delete later
+
 
 
 test('Test Case 4: Logout User', async () => {
@@ -51,7 +53,7 @@ await homePage.navigateLoginPage();
  
 })
 
-test.only('Test Case 5: Register User with existing email', async () => {
+test('Test Case 5: Register User with existing email', async () => {
 
     //Test data
 let Email = "jjoy@kjr.com";
@@ -87,5 +89,33 @@ await signupLogin.clickSignupButton();
 
 //8.Verify error 'Email Address already exist' is visible
 await signupLogin.verifySignupError();
+
+})
+
+test.only('Test Case 7: Verify Test Cases Page', async () => {
+
+    
+//1. Launch Browser
+const browser = await chromium.launch();
+//Launch New Page
+ const page = await browser.newPage();
+
+ const homePage = new HomePage(page);
+ const signupLogin = new SignupLoginPage(page);
+ //const testCases = new TestcasesPage(page);
+
+ //2. Navigate to url 'http://automationexercise.com'
+ await homePage.navigateHomePage();
+
+//3. Verify that home page is visible successfully
+await homePage.verifyHomePageLaunched();
+
+//4.Click on Test cases button
+await signupLogin.clickTestCases();
+
+//5. Verify user is navigated to test cases page successfully
+await signupLogin.navigateTestcasePage();
+//await testCases.getTitle();
+await signupLogin.verifyTestLogo();
 
 })

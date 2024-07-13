@@ -15,8 +15,10 @@ constructor(page)
     this.loginButton = page.getByRole('Button', {name:"Login"});
     this.errorMessage = page.locator("//p[normalize-space()='Your email or password is incorrect!']")
      //updated locators for logout page
-    this.logoutButton = page.locator(".fa.fa-lock");
-    this.signupErrorMessage = page.locator("//p[normalize-space()='Email Address already exist!']")
+    this.logoutButton = page.locator(".fa.fa-lock");  //classname locator of logout button
+    this.signupErrorMessage = page.locator("//p[normalize-space()='Email Address already exist!']")  //xpath of error message in signup
+    this.testcasesLink = page.getByRole('link', { name: ' Test Cases' })   //relative cssSelector of testcases link
+    this.searchLogo = page.getByRole('heading', { name: 'Test Cases', exact: true })
 
 }
 
@@ -76,4 +78,22 @@ async verifySignupError()
 {
     await expect(this.signupErrorMessage).toBeVisible();
 }
+
+async clickTestCases()
+{
+    await this.testcasesLink.click();
+
+}
+
+async navigateTestcasePage()
+{
+    await this.page.goto('https://automationexercise.com/test_cases'); 
+    }
+
+    async verifyTestLogo()
+{
+    await expect(this.searchLogo).toBeVisible();
+}
+
+
 }
