@@ -7,6 +7,10 @@ constructor(page){
     this.signupLogin = page.getByText(" Signup / Login");
     this.deleteAccountButton = page.locator('.fa.fa-trash-o') ;
     // this.loggedIn = page.getByText("Logged In as $(name)");
+   
+
+
+
 }
 
 async navigateHomePage()
@@ -39,5 +43,7 @@ async navigateLoginPage()
 {
     await this.page.goto('https://www.automationexercise.com/login'); 
 }
+
+
 
 }
