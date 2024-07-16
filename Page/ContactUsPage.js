@@ -1,19 +1,26 @@
 const {expect} = require('@playwright/test');
-//const path = require('path');
+const path = require('path');
 exports.ContactUsPage = class ContactUsPage {
 
    constructor(page) {
     this.page = page;
+    this.contactUsButton = page.locator('.fa.fa-envelope')
     this.getInTouchText = page.getByText("GET IN TOUCH");
-    this.name = page.getByPlaceholder("Name");
-    this.email = page.getByPlaceholder('Email', { exact: true });
-    this.subject = page.getByPlaceholder("Subject");
-    this.message = page.getByPlaceholder("Your Message Here");
-    this.uploadfile = page.locator("//input[@name='upload_file']");
-    this.submitButton = page.locator("//input[@name='submit']");
+   
+    this.name = page.locator('input[type="text"][data-qa="name"]');
+    this.email = page.locator('//input[@placeholder="Email"]');
+    this.subject  =page.locator('input[data-qa="subject"][name="subject"]');
+    this.message = page.locator('#message');
+    this.uploadfile =  page.locator('input[type="file"]')
+    this.submitButton = page.locator('input[name="submit"]')
     this.successMessage = page.getByText("Success! Your details have been submitted successfully.");
+    this.homeButton = page.locator('.fa.fa-angle-double-left')
    }
+ 
 
+   async clickContactUsButton(){
+      await this.contactUsButton.click()
+   }
    async verifyGetInTouchText()
    {
       await expect(this.getInTouchText).toBeVisible();
@@ -39,28 +46,41 @@ exports.ContactUsPage = class ContactUsPage {
       await this.message.fill(message);
    }
 
-   async uploadFile()
+   async uploadFile(filePath)
    {
       
-      await this.uploadfile.setInputFiles('dummyfile.pdf');
+      await this.uploadfile.setInputFiles(filePath);
 
    }
 
    async clickSubmitButton()
    {
       await this.submitButton.click();
+      await this.page.on('dialog', async dialog => {
+         expect(dialog.message()).toContain('OK');
+         await dialog.accept(); 
+      })
+
    }
    
-   async interactPopupOK()
-   {
-      const popup = await this.page.waitForEvent('popup');
-      // Interact with the new popup normally.
-      await popup.getByRole('button',{name:'OK'}).click();
-   }
+ /*  async interactPopupOK()
+   {   await this.page.on('dialog', async dialog => {
+      expect(dialog.message()).toContain('OK');
+      await dialog.accept(); 
+   })
+}*/
+
+
 
    async VerifySuccessMessage()
    {
       await expect(this.successMessage).toBeVisible();
+      
    }
  
+  async clickHomeButton(){
+   await this.homeButton.click();
+  }
+
+
 }

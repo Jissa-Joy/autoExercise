@@ -1,0 +1,17 @@
+{
+    "name":"jj",
+    "email":"jissa.joy1@kjr.com.au",
+    "password":"test123",
+    "fname":"jisa",
+    "lname":"j",
+    "address" :
+                 {"street":"collins",
+                  "country":"Australia",
+                   "state":"Victoria",
+                  "city":"Melbourne",
+                  "zip":"3000"
+                },
+    "mobile":"0400000000",
+    "birthdate":"01-Jan-1990"
+    
+   }

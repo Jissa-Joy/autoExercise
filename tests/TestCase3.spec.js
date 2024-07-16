@@ -2,18 +2,16 @@ const { test, expect } = require('@playwright/test');
 const {chromium} = require('playwright');
 const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
-const {TestcasesPage} =require('./TestcasesPage');          //maybe delete later
+const {TestcasesPage} =require('./TestcasesPage');         
 const { afterEach } = require('node:test');
 const { ProductsPage } = require('../Page/ProductsPage');
-const { SearchPage } = require('../Page/SearchPage');
-const testdata = require('../searchdata.json');
 const { SubscriptionHomePage } = require('../Page/SubscriptionHomePage');
 const {ContactUsPage} = require('../Page/ContactUsPage')
+const path = require('path');
 
-
-afterEach(async ()=> {
+/*afterEach(async ()=> {
     await page.screenshot({path:Date.now() + screenshot1.png})
-})
+})*/
 
 test('Test Case 4: Logout User', async () => {
 
@@ -109,6 +107,8 @@ test('Test Case 6: Contact Us Form', async () => {
     const Subject = "Automation";
     const Message = "Test message";
     
+    const filePath = path.resolve(__dirname, 'dummyfile.pdf');
+    
     //1. Launch Browser
     const browser = await chromium.launch();
     //Launch New Page
@@ -117,7 +117,7 @@ test('Test Case 6: Contact Us Form', async () => {
      const homePage = new HomePage(page);
    //  const signupLogin = new SignupLoginPage(page);
      const contactUsPage = new ContactUsPage(page);
-    
+  //  const filePath = path.resolve(__dirname,'dummyfile.pdf')
     
      ///2. Navigate to url 'http://automationexercise.com'
      await homePage.navigateHomePage();
@@ -126,7 +126,7 @@ test('Test Case 6: Contact Us Form', async () => {
      await homePage.verifyHomePageLaunched();
      
      //4. Click on 'Contact Us' button
-     await homePage.clickContactUsButton();
+     await contactUsPage.clickContactUsButton();
     
      //5. Verify 'GET IN TOUCH' is visible
      await contactUsPage.verifyGetInTouchText();
@@ -138,7 +138,7 @@ test('Test Case 6: Contact Us Form', async () => {
       await contactUsPage.enterSubject(Subject);
     
      //7. Upload file
-      await contactUsPage.uploadFile();
+      await contactUsPage.uploadFile(filePath);
     
      //.8. Click 'Submit' button
      await contactUsPage.clickSubmitButton();
@@ -276,7 +276,6 @@ test.only('Test Case 8: Verify All Products and product detail page', async () =
          const page = await browser.newPage();
         
          const homePage = new HomePage(page);
-         const signupLogin = new SignupLoginPage(page);
          const subscribeHome = new SubscriptionHomePage(page);
       
          //2. Navigate to url 'http://automationexercise.com'
@@ -294,6 +293,41 @@ test.only('Test Case 8: Verify All Products and product detail page', async () =
 
         //6.Enter email address in input and click arrow button
           await  subscribeHome.enterEmail(emailId);
+
+        //7.Verify success message 'You have been successfully subscribed !' is visible
+         await subscribeHome.verifySuccessMessage();
+
+
+    })
+    test.only('Test Case 11:Verify subscription in Cart page', async () => {
+
+        
+        let emailId = "test1@test.com"
+ 
+        //1. Launch Browser
+        const browser = await chromium.launch();
+        //Launch New Page
+         const page = await browser.newPage();
+        
+         const homePage = new HomePage(page);
+         const subscribeHome = new SubscriptionHomePage(page);
+      
+         //2. Navigate to url 'http://automationexercise.com'
+         await homePage.navigateHomePage();
+        
+        //3. Verify that home page is visible successfully
+        await homePage.verifyHomePageLaunched();
+        
+        //4.Click Cart button
+         await subscribeHome.clickCartButton();
+      
+        //6.verify text 'SUBSCRIPTION'
+        await subscribeHome.verifySubscribeLabel();
+
+
+        //6.Enter email address in input and click arrow button
+          await  subscribeHome.enterEmail(emailId);
+          
 
         //7.Verify success message 'You have been successfully subscribed !' is visible
          await subscribeHome.verifySuccessMessage();

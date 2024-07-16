@@ -9,7 +9,12 @@ exports.SubscriptionHomePage = class SubscriptionHomePage {
         this.email = page.locator('#susbscribe_email');
         this.subscribeButton = page.locator('.fa.fa-arrow-circle-o-right')
       // this.successMessage = page.locator('div:has-text("You have been successfully subscribed!")');
-      this.successMessage=page.locator('#success-subscribe');
+        this.successMessage=page.locator('#success-subscribe');
+
+        //below are locators from Cart Page
+        this.cartButton = page.getByRole('link', { name: ' Cart' }) //cart locator
+
+
 
     }
 
@@ -25,5 +30,10 @@ exports.SubscriptionHomePage = class SubscriptionHomePage {
 
    async verifySuccessMessage(){
     await expect(this.successMessage).toBeVisible();
+   }
+
+   async clickCartButton()
+   {
+    await this.cartButton.click();
    }
 }
