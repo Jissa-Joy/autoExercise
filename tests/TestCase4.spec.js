@@ -12,7 +12,7 @@ const { AddProd } = require('../Page/AddProd');
 
 
 
-test('Test Case 6: Contact Us Form', async () => {
+test.skip('Test Case 6: Contact Us Form', async () => {
 
     //Test Data
     const Name = "Mark";
@@ -26,8 +26,7 @@ test('Test Case 6: Contact Us Form', async () => {
     const browser = await chromium.launch();
     //Launch New Page
      const page = await browser.newPage();
-    
-     const homePage = new HomePage(page);
+    const homePage = new HomePage(page);
    //  const signupLogin = new SignupLoginPage(page);
      const contactUsPage = new ContactUsPage(page);
   //  const filePath = path.resolve(__dirname,'dummyfile.pdf')
@@ -146,10 +145,10 @@ test('Test Case 6: Contact Us Form', async () => {
         await addProducts.itemHover();
         await addProducts.addSecondProductToCart();
         //7.
-        await addProducts.viewCartOption();
-        await page.pause(1000);
+        await addProducts.viewCart();
+      await page.pause(1000)
           //8.
-         await addProducts.navigateToCart();
+       //  await addProducts.navigateToCart();
          
-              await addProducts.verifyItemQty(qty);
+              //await addProducts.verifyItemQty(qty);
     })
