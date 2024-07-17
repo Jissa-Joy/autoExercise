@@ -8,31 +8,54 @@ constructor(page)
     this.proceedToCheckoutButton = page.getByText('Proceed To Checkout');
     this.registerLoginLink = page.getByRole('link', { name: 'Register / Login' });
     this.quantityButton = page.locator('#cart_info').getByRole('button');
+//trying locators of webtable
+     this.cartTable = page.locator('#cart_info_table');
+ //   this.rows = page.cartTable.locator('//table//tr');
+  //   this.itemProduct = rows.locator(":scope", has_text="Blue Top")
    
-    this.cartItems = page.locator('.cart_item');
+
+
+
 }
 
-async verifyProductsInCart() {
-    await expect(this.cartItems).toHaveCount(2);
+
+async getCartRows() {
+    return this.cartTable.locator('tr');
   }
 
-  async verifyProductDetails() {
-    const products = await this.cartItems.elementHandles();
-    for (const product of products) {
-      const quantity = await product.locator('.cart_quantity button').textContent();
-      const price = await product.locator('.cart_price p').textContent();
-      const totalPrice = await product.locator('.cart_total p').textContent();
-      console.log(`Quantity: ${quantity}, Price: ${price}, Total Price: ${totalPrice}`);
-    }
+  async getCellFromRow(row, colIndex) {
+    return row.locator('td').nth(colIndex);
   }
 
-async verifyProdInCart() {
-    if (productCount !== 2) {
-        throw new Error('Both products were not added to the cart.');
+  async verifyProductDetails(productName, expectedPrice, expectedQuantity, expectedTotal) {
+    const rows = await this.getCartRows();
+    const rowCount = await rows.count();
+    let found = false;
+
+    for (let i = 0; i < rowCount; i++) {
+      const row = rows.nth(i);
+      const productDescription = await (await this.getCellFromRow(row, 1)).textContent();
+      if (productDescription.includes(productName)) {
+        const price = await (await this.getCellFromRow(row, 2)).textContent();
+        const quantity = await (await this.getCellFromRow(row, 3)).locator('button').textContent();
+        const total = await (await this.getCellFromRow(row, 4)).textContent();
+        expect(price.trim()).toBe(expectedPrice);
+        expect(quantity.trim()).toBe(expectedQuantity.toString());
+        expect(total.trim()).toBe(expectedTotal);
+        found = true;
+        break;
+      }
     }
+
+    expect(found).toBe(true, `${productName} should be in the cart`);
+  }
 }
 
 
 
 
-}
+
+
+
+
+
