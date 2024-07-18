@@ -4,7 +4,7 @@ const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
 const {TestcasesPage} =require('./TestcasesPage');         
 const { afterEach } = require('node:test');
-const { ProductsPage } = require('../Page/ProductsPage');
+const { ProductsPage, SearchProductPage } = require('../Page/SearchProductPage');
 const { SubscriptionHomePage } = require('../Page/SubscriptionHomePage');
 const {ContactUsPage} = require('../Page/ContactUsPage')
 const path = require('path');
@@ -218,7 +218,7 @@ test.only('Test Case 8: Verify All Products and product detail page', async () =
    await page.pause(3000);
 
     //9.verify that detail detail is visible 
-    
+    awa
 //update code here
 
     })
@@ -232,11 +232,8 @@ test.only('Test Case 8: Verify All Products and product detail page', async () =
         const browser = await chromium.launch();
         //Launch New Page
          const page = await browser.newPage();
-        
          const homePage = new HomePage(page);
-         const signupLogin = new SignupLoginPage(page);
-         const prodPage = new ProductsPage(page);
-         const searchPage = new SearchPage(page);
+         const searchProd = new SearchProductPage(page);
       
          //2. Navigate to url 'http://automationexercise.com'
          await homePage.navigateHomePage();
@@ -245,22 +242,22 @@ test.only('Test Case 8: Verify All Products and product detail page', async () =
         await homePage.verifyHomePageLaunched();
         
         //4.Click on Product button
-        await prodPage.clickProductsButton();
+        await searchProd.clickProductsButton();
         
         //5. Verify user is navigated to ALL PRODUCTS page successfully
        
-       await prodPage.navigateProductPage();
-
+       await searchProd.navigateProductPage();
+       
        //6.Enter product name in search input and click search button
-       await searchPage.enterSearch(itemName);
+      await searchProd.enterSearch()
       
  
        //7.Verify 'Searched products' is visible
-        await searchPage.verifyLabel();
+        await searchProd.verifyLabel();
 
        //8.Verify all the products related to search are visible
-
-      await searchPage.verifyAllProductscontain(itemName);
+       await searchProd.verifyAllProductsAreVisible();
+      
     
 
     })

@@ -3,7 +3,7 @@ const {chromium} = require('playwright');
 const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
 const { afterEach } = require('node:test');
-const { ProductsPage } = require('../Page/ProductsPage');
+const { ProductsPage } = require('../Page/SearchProductPage');
 const {ContactUsPage} = require('../Page/ContactUsPage')
 const path = require('path');
 const { AddProductsPage } = require('../Page/AddProductsPage');
@@ -73,52 +73,10 @@ test.skip('Test Case 6: Contact Us Form', async () => {
     
     })
 
-    //Test Case 12 below
-    test.only('Test Case 12:Add Products in Cart', async () => {
-        
-        //1. Launch Browser
-        const browser = await chromium.launch();
-        //Launch New Page
-         const page = await browser.newPage();
-        
-         const homePage = new HomePage(page);
-         const addProdPage = new AddProd(page);
-         const viewCart = new ViewCartPage(page);
-      
-         //2. Navigate to url 'http://automationexercise.com'
-         await homePage.navigateHomePage();
-        
-        //3. Verify that home page is visible successfully
-        await homePage.verifyHomePageLaunched();
-       
-        //4.Click Products button
-
-        await addProdPage.gotoProducts();
-     
-        //5. Hover over first product and click add to cart
-       await addProdPage.addFirstProductToCart();
-
-        //6.Click continue shopping button
-       await addProdPage.continueShop();
-      
-        //7.Hover over second product and click 'Add to Cart'
-        await addProdPage.itemHover();
-        await addProdPage.addSecondProductToCart() ;
     
-        //8.Click View Cart Button
-    
-         await addProdPage.addProd();
-        //9.Verify both products are added to Cart
-        await addProdPage.viewCart();
-
-        //10. Verify the prices, quantity and total price
-
-          await addProdPage.verifyProdDetails();
-    })
-
     test.only('TC 12:Add Products in Cart', async () => {
     
-        let qty ="1"
+
         //1. Launch Browser
         const browser = await chromium.launch();
         //Launch New Page
@@ -193,3 +151,4 @@ test.skip('Test Case 6: Contact Us Form', async () => {
 
 
     })
+
