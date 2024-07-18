@@ -40,12 +40,7 @@ async verifyLabel()
 }
 
 //function to verify product detials such as prod name, category, price , availability , condition and brand
-// Check the visibility of each product
-/*const productCount = await productsContainer.locator('.product-image-wrapper').count();
-for (let i = 0; i < productCount; i++) {
-  const product = productsContainer.locator('.product-image-wrapper').nth(i);
-  await expect(product).toBeVisible();
-}*/
+
 
 async verifyAllProductsAreVisible() {
     const productCount = await this.productItem.count();
