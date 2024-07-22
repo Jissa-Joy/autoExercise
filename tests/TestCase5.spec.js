@@ -8,12 +8,12 @@ const { AddProductsPage } = require('../Page/AddProductsPage');
 const {ViewCartPage} = require('../Page/ViewCartPage');
 const {VerifyProductsQtyPage} = require('../Page/VerifyProductsQtyPage');
 const {CreateAccountPage} = require('./CreateAccountPage');
+const testdata = require('../testdata.json'); 
 
 test.only('TC 14:Place Order: Register with CheckOUT', async () => {
+    //Try cookies instead of using testdata and using signup details from TC 1
      //Test data
-     let Name = "JJ";
-     let Email = "jjoy@gmail.com";
-     let Pw = "test123";
+     
      let Day = "2"; 
      let Month = "January"; 
      let Year = "1998";
@@ -71,24 +71,24 @@ await placeOrder.clickRegister();
 // 9. Fill all details in Signup and create account
 await homePage.navigateHomePage();
 await homePage.clickSignupLogin();
-await signupLogin.enterName(Name);
-await signupLogin.enterEmailAddress(Email);
+await signupLogin.enterName(testdata.name);
+await signupLogin.enterEmailAddress(testdata.email);
 await signupLogin.clickSignupButton();
 await createAccountPage.selectTitle(Title);
-await createAccountPage.fillName(Name);
-await createAccountPage.fillEmail(Email);
-await createAccountPage.fillPassword(Pw);
+await createAccountPage.fillName(testdata.name);
+await createAccountPage.fillEmail(testdata.email);
+await createAccountPage.fillPassword(testdata.password);
 await createAccountPage.fillDateOfBirth(Day,Month,Year);
-await createAccountPage.fillFirstname(Fname);
-await createAccountPage.fillLastname(Fname);
+await createAccountPage.fillFirstname(testdata.fname);
+await createAccountPage.fillLastname(testdata.lname);
 await createAccountPage.fillcompany(Company);
-await createAccountPage.fillAddress1(Address1);
+await createAccountPage.fillAddress1(testdata.address.street);
 await createAccountPage.fillAddress2(Address2);
-await createAccountPage.fillCountry(Country);
-await createAccountPage.fillState(State);
-await createAccountPage.fillCity(City);
-await createAccountPage.fillZipcode(Zipcode);
-await createAccountPage.fillMobilenumber(Mobilenumber);
+await createAccountPage.fillCountry(testdata.address.country);
+await createAccountPage.fillState(testdata.address.state);
+await createAccountPage.fillCity(testdata.address.city);
+await createAccountPage.fillZipcode(testdata.address.zip);
+await createAccountPage.fillMobilenumber(testdata.mobile);
 
 
 await createAccountPage.clickCreateButton();
@@ -100,22 +100,20 @@ await createAccountPage.verifyAccountCreatedText();
 await createAccountPage.clickcontinueButton();
 
 
-await homePage.VerifyUserLogin(Name);
+await homePage.VerifyUserLogin(testdata.name);
+await homePage.clickDeleteAccountButton();  //delete later once tc5 works
 
-// 10. Verify 'ACCOUNT CREATED!' and click 'Continue' button
 
-
-// 11. Verify ' Logged in as username' at top
 
 
 // 12.Click 'Cart' button
 
-
+await placeOrder.clickMainCart();
 // 13. Click 'Proceed To Checkout' button
-
+await placeOrder.proceedToCheckout();
 
 // 14. Verify Address Details and Review Your Order
-
+await placeOrder.clickMainCart();
 
 // 15. Enter description in comment text area and click 'Place Order'
 
