@@ -9,31 +9,23 @@ const {ViewCartPage} = require('../Page/ViewCartPage');
 const {VerifyProductsQtyPage} = require('../Page/VerifyProductsQtyPage');
 const {CreateAccountPage} = require('./CreateAccountPage');
 const testdata = require('../testdata.json'); 
+const {CheckoutPage}= require('../Page/CheckoutPage')
 
-test.only('TC 14:Place Order: Register with CheckOUT', async () => {
-    //Try cookies instead of using testdata and using signup details from TC 1
-     //Test data
-     
-     let Day = "2"; 
-     let Month = "January"; 
-     let Year = "1998";
-     let Title = "Mrs.";
-     let Fname = "Jis";
-     let Lname = "J";
+test.skip('TC 14:Place Order: Register with CheckOUT', async () => {
+
+
+    
      let Company = "KJR";
      let Address1 = "Collin Square";
      let Address2 = "";
-     let Country = "Australia";
-     let State = "Victoria";
-     let City = "Melboune";
-     let Zipcode = "3000";
-     let Mobilenumber = "0400000000";
+         
     
 // 1. Launch browser
 const browser = await chromium.launch();
  //Launch New Page
  const page = await browser.newPage();
-
+ const context = await browser.newContext();
+ const fs = require('fs');
  const homePage = new HomePage(page);
  const addProducts = new AddProductsPage(page);
  const viewCart = new ViewCartPage(page);
@@ -41,10 +33,11 @@ const browser = await chromium.launch();
  const placeOrder = new PlaceOrderPage(page);
  const signupLogin = new SignupLoginPage(page);
  const createAccountPage = new CreateAccountPage(page);
+ const checkoutPage = new CheckoutPage(page);
 
 
 // 2. Navigate to url 'http://automationexercise.com'
-await homePage.navigateHomePage();
+  await homePage.navigateHomePage();
 
 // 3. Verify that home page is visible successfully
 await homePage.verifyHomePageLaunched();
@@ -54,6 +47,18 @@ await homePage.verifyHomePageLaunched();
 await addProducts.gotoProducts();
 await addProducts.itemHover();
 await addProducts.addFirstProductToCart();
+//trial using cookies added on July 23rd
+
+/*const cookies = await context.cookies();
+const localStorage = await page.evaluate(() => {
+  const json = {};
+  for (const key in window.localStorage) {
+    json[key] = window.localStorage.getItem(key);
+  }
+  return JSON.stringify(json);
+});
+fs.writeFileSync('cookies.json', JSON.stringify(cookies, null, 2));
+fs.writeFileSync('localStorage.json', localStorage);*/
 
 // 5. Click 'Cart' button
 await placeOrder.cartBtnClick();
@@ -74,11 +79,11 @@ await homePage.clickSignupLogin();
 await signupLogin.enterName(testdata.name);
 await signupLogin.enterEmailAddress(testdata.email);
 await signupLogin.clickSignupButton();
-await createAccountPage.selectTitle(Title);
+//await createAccountPage.selectTitle(Title);
 await createAccountPage.fillName(testdata.name);
 await createAccountPage.fillEmail(testdata.email);
 await createAccountPage.fillPassword(testdata.password);
-await createAccountPage.fillDateOfBirth(Day,Month,Year);
+//await createAccountPage.fillDateOfBirth(Day,Month,Year);
 await createAccountPage.fillFirstname(testdata.fname);
 await createAccountPage.fillLastname(testdata.lname);
 await createAccountPage.fillcompany(Company);
@@ -101,10 +106,6 @@ await createAccountPage.clickcontinueButton();
 
 
 await homePage.VerifyUserLogin(testdata.name);
-await homePage.clickDeleteAccountButton();  //delete later once tc5 works
-
-
-
 
 // 12.Click 'Cart' button
 
@@ -113,10 +114,16 @@ await placeOrder.clickMainCart();
 await placeOrder.proceedToCheckout();
 
 // 14. Verify Address Details and Review Your Order
-await placeOrder.clickMainCart();
 
+await placeOrder.gotoCart();
+await checkoutPage.placeOrder();
 // 15. Enter description in comment text area and click 'Place Order'
 
+// Create an instance of the CheckoutPage class
+
+
+// Verify that the components of the cart item with product number 1 are visible
+await checkoutPage.verifyOrderItemsComponents(1);
 
 // 16. Enter payment details: Name on Card, Card Number, CVC, Expiration date
 

@@ -5,11 +5,12 @@ constructor(page)
 {
     this.page = page;
     this.checkoutButton = page.locator('.btn.btn-default.check-out');
-    this.cartButton = page.getByRole('');
+    this.cartButton = page.locator('a').filter({ hasText: 'View Cart' })
      this.proceedCheckoutBttn = page.locator('text="Proceed To Checkout"');
      this.registerBtn = page.getByRole('link', { name: 'Register / Login' });
      this.cartButton = page.locator('text=View Cart');
-     this.mainCartButton = page.locator('a[href="/view_cart"]');
+     this.mainCartButton = page.getByRole('link', { name: ' Cart' });
+     this.textAreaDesc=  page.locator('textarea[name="message"]');
 
 }
 
@@ -36,12 +37,11 @@ async clickRegister()
 async clickMainCart()
 {
     await this.mainCartButton.click();
-   // await await this.page.goto('https://automationexercise.com/checkout'); 
+   // await this.page.goto('https://automationexercise.com/checkout'); 
 }
 
 async gotoCart(){
     await this.page.goto('https://automationexercise.com/checkout'); 
 }
 
-}
 }
