@@ -3,6 +3,9 @@ const { ContactPage } = require('../Page/ContactPage');
 const {HomePage} = require('./HomePage');
 const path = require('path');
 
+//The path module in Node.js provides utilities for working with file and directory paths. 
+//is a core module, meaning it comes with Node.js and doesn't need to be installed separately-
+
 test('Automate Contact Us Page', async ({ page }) => {
     const contactPage = new ContactPage(page);
     const homePage = new HomePage(page);
@@ -16,7 +19,8 @@ test('Automate Contact Us Page', async ({ page }) => {
     // Step 3: Verify that the contact form is visible
     await contactPage.verifyContactFormTitle();
 
-    // Step 4: Fill the contact form
+    // Step 4: Fill the contact form 
+    //filepath = C:\Users\JissaJoy\Desktop\PW\Project\Playwright\files
     const filePath = path.join(__dirname, '../files/testfile.png');
     await contactPage.fillContactForm(
         'J J', 
