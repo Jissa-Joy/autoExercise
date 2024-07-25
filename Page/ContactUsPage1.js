@@ -1,3 +1,7 @@
+/* USE THE OTHER PAGE (ContactPage.js) for testing - updated methods to handle the alert & works well
+
+
+
 const {expect} = require('@playwright/test');
 const path = require('path');
 exports.ContactUsPage = class ContactUsPage {
@@ -63,12 +67,7 @@ exports.ContactUsPage = class ContactUsPage {
 
    }
    
- /*  async interactPopupOK()
-   {   await this.page.on('dialog', async dialog => {
-      expect(dialog.message()).toContain('OK');
-      await dialog.accept(); 
-   })
-}*/
+ 
 
 
 
@@ -83,4 +82,4 @@ exports.ContactUsPage = class ContactUsPage {
   }
 
 
-}
+}*/

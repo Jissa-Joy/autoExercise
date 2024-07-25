@@ -6,7 +6,7 @@ const {TestcasesPage} =require('./TestcasesPage');
 const { afterEach } = require('node:test');
 const { ProductsPage, SearchProductPage } = require('../Page/SearchProductPage');
 const { SubscriptionHomePage } = require('../Page/SubscriptionHomePage');
-const {ContactUsPage} = require('../Page/ContactUsPage')
+const {ContactUsPage} = require('../Page/ContactPage')
 const path = require('path');
 
 /*afterEach(async ()=> {

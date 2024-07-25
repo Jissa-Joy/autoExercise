@@ -1,39 +1,35 @@
+// category.test.js
+
 const { test, expect } = require('@playwright/test');
-const {chromium} = require('playwright');
-const { HomePage } = require('./HomePage');
+const { CategoryPage } = require('../Page/CategoryPage');
 
-const { afterEach } = require('node:test');
-
-test.skip('View Category Products', async () => {
-   
-    //1. Launch Browser
-    const browser = await chromium.launch();
-    //Launch New Page
-     const page = await browser.newPage();
-    const homePage = new HomePage(page);
-  
-     ///2. Navigate to url 'http://automationexercise.com'
-     await homePage.navigateHomePage();
+test('View Category Products Test Case', async ({ page }) => {
+    const categoryPage = new CategoryPage(page);
     
-// 3. Verify that categories are visible on left side bar
+    // Step 1: Launch browser and navigate to the URL
+    await page.goto('http://automationexercise.com');
+    
+    // Step 2: Verify that categories are visible on the left sidebar
+   await categoryPage.areCategoriesVisible();
+    
+    // Step 3: Click on 'Women' category
+    await categoryPage.clickWomenCategory();
+    
+    // Step 4: Click on any category link under 'Women' category, e.g., 'Dress'
+    await categoryPage.navigateToSubCategory();
+     // Step 5: Verify that category page is displayed and confirm text 'WOMEN - TOPS PRODUCTS'
+    await categoryPage.subCategoryLabel();
+        
+    // Step 6: On the left sidebar, click on any sub-category link of 'Men' category
 
+    await categoryPage.clickMenCategory();
+    await categoryPage.navigateToMenSubCategory();
+   // await categoryPage.navigateToCategory('Men');  try later
+   // await categoryPage.navigateToSubCategory('Tshirts');
+    
+    // Step 7: Verify that the user is navigated to that category page
+ //   const menCategoryHeaderText = await categoryPage.getCategoryHeaderText();
+   // expect(menCategoryHeaderText).toContain('MEN - TSHIRTS PRODUCTS');
 
-// 4. Click on 'Women' category
-
-
-// 5. Click on any category link under 'Women' category, for example: Dress
-
-
-// 6. Verify that category page is displayed and confirm text 'WOMEN - TOPS PRODUCTS'
-
-
-// 7. On left side bar, click on any sub-category link of 'Men' category
-
-
-// 8. Verify that user is navigated to that category page
-
-
-
-
-
-
+   await categoryPage.menSubCategoryLabel();
+});
