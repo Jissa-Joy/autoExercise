@@ -58,4 +58,9 @@ exports.AddProductsPage = class AddProductsPage {
     async verifyItemQty() {
         await expect (this.cartQuantity.toBe('1'));
     }
+
+
+    //below method added on Aug2
+    
+
 }

@@ -7,6 +7,7 @@ const {CreateAccountPage} = require('./CreateAccountPage');
 const { CheckoutPage } = require('../Page/CheckoutPage');
 //const { PaymentPage  } = require('./PaymentPage');
 const {PlaceOrderPage} =require('../Page/PlaceOrderPage');
+//const {CartPage} = require('../Page/ca')
 
 test.only('Test Case 14: Place Order: Register while Checkout', async() => {
 
@@ -44,11 +45,11 @@ test.only('Test Case 14: Place Order: Register while Checkout', async() => {
   const page = await browser.newPage();
 
   const homePage = new HomePage(page);
-  const cartPage = new CartPage(page);
+ // const cartPage = new CartPage(page);
   const signupLogin = new SignupLoginPage(page);
   const createAccountPage = new CreateAccountPage(page);
   const checkoutPage = new CheckoutPage(page);
-  const paymentPage = new PaymentPage(page);
+ // const paymentPage = new PaymentPage(page);
   const placeOrder = new PlaceOrderPage(page);
 //2. Navigate to URL home page
   await homePage.navigateHomePage(); 
@@ -57,6 +58,7 @@ test.only('Test Case 14: Place Order: Register while Checkout', async() => {
   await homePage.verifyHomePageLaunched();
 
 //4. Add products to cart
+
   await homePage.clickAddTOCartButton(prodNo);
 
 // 5. Click 'Cart' button

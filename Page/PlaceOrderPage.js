@@ -44,4 +44,15 @@ async gotoCart(){
     await this.page.goto('https://automationexercise.com/checkout'); 
 }
 
+// Method to get the product locator dynamically
+viewProductLocator(prodNo) {
+    return this.page.locator(`a[href="/product_details/${prodNo}"]`);
+  }
+
+  // Method to click the first product
+  async clickProduct(prodNo) {
+    const viewProduct = this.viewProductLocator(prodNo);
+    await viewProduct.click();
+  }
+
 }
