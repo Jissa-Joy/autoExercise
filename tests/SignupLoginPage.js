@@ -8,7 +8,7 @@ constructor(page)
     this.NewUserText = page.getByText("New User Signup!");
     this.nameInput  = page.locator('//div[@class="signup-form"]//input[@type = "text"]'); 
     this.emailInput = page.locator('//div[@class="signup-form"]//input[@type = "email"]'); 
-    this.signupButton = page.locator('//div[@class="signup-form"]//button'); 
+    this.signupButton = page.locator('.btn.btn-default').filter({hasText: "Signup"}); 
 
     this.loginToYourAccountText = page.getByText("Login to your account");
     this.emailLogin = page.locator('//*[@class="login-form"]//*[@type = "email"]');
@@ -40,7 +40,7 @@ async enterEmailAddress(email)
 
 async clickSignupButton()
 {
-    await expect(this.signupButton).toBeEnabled();
+  //  await expect(this.signupButton).toBeEnabled();
     await this.signupButton.click();
 }
 

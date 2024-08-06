@@ -7,8 +7,8 @@ const {CreateAccountPage} = require('./CreateAccountPage');
 test('Test Case 1: Register User ', async () => {
 
      //Test data
-    let Name = "VR01";
-    let Email = "VR01@gmail.com";
+    let Name = "VR001";
+    let Email = "VR001@gmail.com";
     let Pw = "VRpw01";
     let Day = "28"; 
     let Month = "November"; 
