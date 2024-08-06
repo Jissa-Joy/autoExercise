@@ -49,16 +49,6 @@ await addProducts.itemHover();
 await addProducts.addFirstProductToCart();
 //trial using cookies added on July 23rd
 
-/*const cookies = await context.cookies();
-const localStorage = await page.evaluate(() => {
-  const json = {};
-  for (const key in window.localStorage) {
-    json[key] = window.localStorage.getItem(key);
-  }
-  return JSON.stringify(json);
-});
-fs.writeFileSync('cookies.json', JSON.stringify(cookies, null, 2));
-fs.writeFileSync('localStorage.json', localStorage);*/
 
 // 5. Click 'Cart' button
 await placeOrder.cartBtnClick();
