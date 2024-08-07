@@ -11,12 +11,12 @@ constructor(page)
      this.cartButton = page.locator('text=View Cart');
      this.mainCartButton = page.getByRole('link', { name: ' Cart' });
      this.textAreaDesc=  page.locator('textarea[name="message"]');
+     this.addtoCartBtn = page.locator('fa.fa-shopping-cart').filter({hasText:"Add to cart"});
 
 }
 
 async cartBtnClick(){
    await this.cartButton.click();
-  
 }
 
 async proceedToCheckout(){
@@ -28,6 +28,10 @@ async verifyCartPageLaunched()
 {
     await expect(this.page).toHaveTitle("Automation Exercise - Checkout");
 }
+
+async clickAddCart(){
+    await this.addtoCartBtn.click();
+}
 async clickRegister()
 
 {
@@ -37,7 +41,7 @@ async clickRegister()
 async clickMainCart()
 {
     await this.mainCartButton.click();
-   // await this.page.goto('https://automationexercise.com/checkout'); 
+
 }
 
 async gotoCart(){

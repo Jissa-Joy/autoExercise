@@ -9,7 +9,7 @@ test('Test Case 17: Remove Products ', async () => {
 
 
   
- let prodNo='3'
+ const prodNo='7'
     const browser = await chromium.launch();
     //Launch New Page
       const page = await browser.newPage();
@@ -25,18 +25,17 @@ test('Test Case 17: Remove Products ', async () => {
       await homePage.verifyHomePageLaunched();
     
     //4. Add products to cart
- await placeOrder.clickProduct(prodNo)
+    await homePage.clickAddTOCartButton(prodNo);
 //click add cart button here
-
+     // await placeOrder.clickAddCart();
     // 5. Click 'Cart' button
     await placeOrder.cartBtnClick();
-    
     // 6. Verify that cart page is displayed
     
     await placeOrder.verifyCartPageLaunched();
 
        // Step 6: Click 'X' button corresponding to a specific product by ID
-    await removeProduct.clickRemoveButtonForProductById(3); 
+    await removeProduct.clickRemoveButtonForProductById(prodNo); 
 
 
 });
