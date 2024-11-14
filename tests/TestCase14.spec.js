@@ -294,15 +294,26 @@ test.only('Test Case 15: Place Order: Register befoe Checkout', async() => {
 
     //Test data
       const prodNo = "3";
-      let Email = "jv@test.com";
+      let Email = "jjy@test.com";
       let Pw = "test123";
-      let Name = "test123";
+      let Name = "jj";
+      let Title = "Mrs.";
     //Payment test data
      let CardName = "Jess";
      let CardNo = "123345566";
      let cvc = "234";
      let ExpMonth = "10";
      let ExpYear = "2025";
+     let Fname = "jess";
+    let Lname = "j";
+    let Company = "";
+    let Address1 = "747 collins";
+    let Address2 = "";
+    let Country = "Australia";
+    let State = "vic";
+    let City = "mel";
+    let Zipcode = "3000";
+    let Mobilenumber = "412345678";
         
     //1. Launch Browser
       const browser = await chromium.launch();
@@ -348,30 +359,30 @@ await signupLogin.clickLoginButton();
  // 10. Click Proceed To Checkout
  
  await placeOrder.proceedToCheckout();
+ //12. Verify Address Details and Review Your Order
+ await checkoutPage.verifyDeliveryAddress(Title,Fname,Lname,Company,Address1,Address2,Country,State,City,Zipcode,Mobilenumber);
+ await checkoutPage.verifyBilllingAddress(Title,Fname,Lname,Company,Address1,Address2,Country,State,City,Zipcode,Mobilenumber);
+ 
 
- //11. Verify Address Details and Review Your Order
-   await checkoutPage.verifyDeliveryAddress(Title,Fname,Lname,Company,Address1,Address2,Country,State,City,Zipcode,Mobilenumber);
-   await checkoutPage.verifyBilllingAddress(Title,Fname,Lname,Company,Address1,Address2,Country,State,City,Zipcode,Mobilenumber);
-   
- 
- //12. Enter description in comment text area and click 'Place Order'
-   await checkoutPage.placeOrder();
- 
-   //13. Enter payment details: Name on Card, Card Number, CVC, Expiration date
-   await paymentPage.enterPaymentDetails(CardName,CardNo,cvc,ExpMonth,ExpYear);
- 
- //14. Click 'Pay and Confirm Order' button
-   await paymentPage.clickPayButton();
-   //15. Verify success message 'Your order has been placed successfully!'
-   // await paymentPage.verifySuccessMessageVisibility();
- 
- //16. Click 'Delete Account' button
- await homePage.clickDeleteAccountButton();
- 
- //17. Verify that 'ACCOUNT DELETED!' is visible
- await expect(page.getByText("Account Deleted!")).toBeVisible();
- await page.locator('.btn.btn-primary').click();
- 
+//13. Enter description in comment text area and click 'Place Order'
+ await checkoutPage.placeOrder();
+
+ //14. Enter payment details: Name on Card, Card Number, CVC, Expiration date
+ await paymentPage.enterPaymentDetails(CardName,CardNo,cvc,ExpMonth,ExpYear);
+
+//15. Click 'Pay and Confirm Order' button
+ await paymentPage.clickPayButton();
+ //16. Verify success message 'Your order has been placed successfully!'
+ // await paymentPage.verifySuccessMessageVisibility();
+
+//17. Click 'Delete Account' button
+await homePage.clickDeleteAccountButton();
+
+//18. Verify that 'ACCOUNT DELETED!' is visible
+await expect(page.getByText("Account Deleted!")).toBeVisible();
+await page.locator('.btn.btn-primary').click();
+
+
 
 
 

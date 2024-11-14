@@ -6,7 +6,7 @@ const path = require('path');
 //The path module in Node.js provides utilities for working with file and directory paths. 
 //is a core module, meaning it comes with Node.js and doesn't need to be installed separately-
 
-
+//this code worked on july 13(ie, updated in july)
 test('Automate Contact Us Page', async ({ page }) => {
     const contactPage = new ContactPage(page);
     const homePage = new HomePage(page);

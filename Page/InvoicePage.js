@@ -3,6 +3,11 @@ exports.ViewBrandPage = class ViewBrandPage {
 
 constructor(page){
 
-    this.page = page;
+
+
+    
 }
+
+
+
 }

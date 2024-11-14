@@ -13,7 +13,7 @@ exports.SubscriptionHomePage = class SubscriptionHomePage {
 
         //below are locators from Cart Page
         this.cartButton = page.getByRole('link', { name: ' Cart' }) //cart locator
-
+        this.footerSelector = 'footer.footer';
 
 
     }
@@ -36,4 +36,17 @@ exports.SubscriptionHomePage = class SubscriptionHomePage {
    {
     await this.cartButton.click();
    }
+
+//uncommented oct 18
+async scrollToFooter() {
+  const footer = await this.page.$(this.footerSelector); // Select the footer element
+  if (footer) {
+      await footer.scrollIntoViewIfNeeded(); // Scroll the footer into view
+      
+  }
+  
+}
+
+
+
 }

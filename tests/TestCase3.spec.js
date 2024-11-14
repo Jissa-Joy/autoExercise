@@ -4,10 +4,9 @@ const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
 const {TestcasesPage} =require('./TestcasesPage');         
 const { afterEach } = require('node:test');
-const { ProductsPage, SearchProductPage } = require('../Page/SearchProductPage');
+const { ProductPage} = require('../Page/ProductPage');
 const { SubscriptionHomePage } = require('../Page/SubscriptionHomePage');
-const {ContactUsPage} = require('../Page/ContactPage')
-const path = require('path');
+
 
 /*afterEach(async ()=> {
     await page.screenshot({path:Date.now() + screenshot1.png})
@@ -99,62 +98,6 @@ await signupLogin.verifySignupError();
 
 })
 
-test('Test Case 6: Contact Us Form', async () => {
-
-    //Test Data
-    const Name = "Mark";
-    const Email = "Mark@test.com";
-    const Subject = "Automation";
-    const Message = "Test message";
-    
-    const filePath = path.resolve(__dirname, 'dummyfile.pdf');
-    
-    //1. Launch Browser
-    const browser = await chromium.launch();
-    //Launch New Page
-     const page = await browser.newPage();
-    
-     const homePage = new HomePage(page);
-   //  const signupLogin = new SignupLoginPage(page);
-     const contactUsPage = new ContactUsPage(page);
-  //  const filePath = path.resolve(__dirname,'dummyfile.pdf')
-    
-     ///2. Navigate to url 'http://automationexercise.com'
-     await homePage.navigateHomePage();
-    
-     //3. Verify that home page is visible successfully
-     await homePage.verifyHomePageLaunched();
-     
-     //4. Click on 'Contact Us' button
-     await contactUsPage.clickContactUsButton();
-    
-     //5. Verify 'GET IN TOUCH' is visible
-     await contactUsPage.verifyGetInTouchText();
-    
-     //6. Enter name, email, subject and message
-      await contactUsPage.enterName(Name);
-      await contactUsPage.enterEmail(Email);
-      await contactUsPage.enterMessage(Message);
-      await contactUsPage.enterSubject(Subject);
-    
-     //7. Upload file
-      await contactUsPage.uploadFile(filePath);
-    
-     //.8. Click 'Submit' button
-     await contactUsPage.clickSubmitButton();
-    
-    //.9 click Ok on popup
-    await contactUsPage.interactPopupOK();
-    
-    //10. Verify success message 'Success! Your details have been submitted successfully.' is visible
-    await contactUsPage.VerifySuccessMessage();
-    
-    //11. Click 'Home' button and verify that landed to home page successfully
-    await homePage.clickHomeButton();
-    await homePage.verifyHomePageLaunched();
-    
-    })
-
 test('Test Case 7: Verify Test Cases Page', async () => {
 
     
@@ -193,7 +136,7 @@ test.only('Test Case 8: Verify All Products and product detail page', async () =
     
      const homePage = new HomePage(page);
      const signupLogin = new SignupLoginPage(page);
-     const prodPage = new ProductsPage(page);
+     const prodPage = new ProductPage(page);
   
      //2. Navigate to url 'http://automationexercise.com'
      await homePage.navigateHomePage();
@@ -282,7 +225,7 @@ test.only('Test Case 8: Verify All Products and product detail page', async () =
         await homePage.verifyHomePageLaunched();
         
         //4.Scroll down to footer
-         // await subscribeHome.scrolltoFooter();
+          await subscribeHome.scrollToFooter();
 
         //5.verify text 'SUBSCRIPTION'
         await subscribeHome.verifySubscribeLabel();

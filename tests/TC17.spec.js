@@ -5,6 +5,9 @@ const { RemoveProducts } = require('../Page/RemoveProducts');
 const {PlaceOrderPage} =require('../Page/PlaceOrderPage');
 const { afterEach } = require('node:test');
 const { HomePage } = require('./HomePage');
+const { ProductPage}= require('../Page/ProductPage');
+const {BrandPage} = require('../Page/BrandPage');
+
 test('Test Case 17: Remove Products ', async () => {
 
 
@@ -18,6 +21,7 @@ test('Test Case 17: Remove Products ', async () => {
    
        const removeProduct= new RemoveProducts(page);
       const placeOrder = new PlaceOrderPage(page);
+      const brandPage = new BrandPage(page);
     //2. Navigate to URL home page
       await homePage.navigateHomePage(); 
     
@@ -48,21 +52,27 @@ test('Test Case 19: View Category Products ', async () => {
   const page = await browser.newPage();
 // 1. Launch browser
 const homePage = new HomePage(page);
+const prodPage = new ProductPage(page);
+const brandPage = new BrandPage(page);
 
 // 2. Navigate to url 'http://automationexercise.com'
 
 await homePage.navigateHomePage(); 
 
 // 3. Click on 'Products' button
-
+await prodPage.clickProductsButton();
 // 4. Verify that Brands are visible on left side bar
-
+await brandPage.verifyBrandsText();
 // 5. Click on any brand name
 
+await brandPage.selectBrand('Polo');
 // 6. Verify that user is navigated to brand page and brand products are displayed
+    await brandPage.verifyBrandProductsDisplayed();
+
 
 // 7. On left side bar, click on any other brand link
 
+await brandPage.selectBrand('Babyhug');
 // 8. Verify that user is navigated to that brand page and can see products
-
+await brandPage.verifyBrandProductsDisplayed();
 })
