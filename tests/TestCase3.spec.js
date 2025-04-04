@@ -1,276 +1,92 @@
 const { test, expect } = require('@playwright/test');
-const {chromium} = require('playwright');
 const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
-const {TestcasesPage} =require('./TestcasesPage');         
-const { afterEach } = require('node:test');
-const { ProductPage} = require('../Page/ProductPage');
+const { ProductPage } = require('../Page/ProductPge');
 const { SubscriptionHomePage } = require('../Page/SubscriptionHomePage');
+const { SearchProductPage } = require('../Page/SearchProductPage');
 
+test.describe('Automation Exercise Tests', () => {
+    let browser, page, homePage, signupLogin, prodPage, subscribeHome, searchProd;
 
-/*afterEach(async ()=> {
-    await page.screenshot({path:Date.now() + screenshot1.png})
-})*/
+    test.beforeEach(async ({ browser }) => {
+        page = await browser.newPage();
+        homePage = new HomePage(page);
+        signupLogin = new SignupLoginPage(page);
+        prodPage = new ProductPage(page);
+        subscribeHome = new SubscriptionHomePage(page);
+        searchProd = new SearchProductPage(page);
 
-test('Test Case 4: Logout User', async () => {
+        await homePage.navigateHomePage();
+        await homePage.verifyHomePageLaunched();
+    },60000);
 
-    //Test data
-let Email = "jjoy@kjr.com";
-let Pw = "test123";
-let Name = "jj";
-    
-//1. Launch Browser
-const browser = await chromium.launch();
-//Launch New Page
- const page = await browser.newPage();
+    test.afterEach(async () => {
+        await page.close();
+    });
 
- const homePage = new HomePage(page);
- const signupLogin = new SignupLoginPage(page);
+    test('Test Case 4: Logout User', async () => {
+        let Email = "jjoy@kjr.com", Pw = "test123", Name = "jj";
 
- //2. Navigate to url 'http://automationexercise.com'
- await homePage.navigateHomePage();
+        await homePage.clickSignupLogin();
+        await signupLogin.verifyLoginToYourAccountText();
+        await signupLogin.fillLoginEmail(Email);
+        await signupLogin.fillLoginPassword(Pw);
+        await signupLogin.clickLoginButton();
+        await homePage.VerifyUserLogin(Name);
+        await signupLogin.clickLogoutButton();
+        await homePage.navigateHomePage();
+    });
 
-//3. Verify that home page is visible successfully
-await homePage.verifyHomePageLaunched();
+    test('Test Case 5: Register User with Existing Email', async () => {
+        let Email = "jjoy@kjr.com", Name = "jj";
 
-//4. Click on 'Signup / Login' button
-await homePage.clickSignupLogin();
+        await homePage.clickSignupLogin();
+        await signupLogin.verifyNewUserSignuptext();
+        await signupLogin.enterName(Name);
+        await signupLogin.enterEmailAddress(Email);
+        await signupLogin.clickSignupButton();
+        await signupLogin.verifySignupError();
+    });
 
-//5. Verify 'Login to your account' is visible
-await signupLogin.verifyLoginToYourAccountText();
+    test('Test Case 7: Verify Test Cases Page', async () => {
+        await signupLogin.clickTestCases();
+        await signupLogin.navigateTestcasePage();
+        await signupLogin.verifyTestLogo();
+    });
 
-//6. Enter correct email address and password
-await signupLogin.fillLoginEmail(Email);
-await signupLogin.fillLoginPassword(Pw);
+    test('Test Case 8: Verify All Products and Product Detail Page', async () => {
+        await prodPage.clickProductsButton();
+        await prodPage.navigateToProductsPage();
+       // await prodPage.verifyProductPageLaunched();
+        await prodPage.clickProduct(1);
+        await prodPage.verifyProductDetails();
+    });
 
-//7. Click 'login' button
-await signupLogin.clickLoginButton();
-
-//8. Verify that 'Logged in as username' is visible
-await homePage.VerifyUserLogin(Name);
-
-//9. Click Logout button
-
-await signupLogin.clickLogoutButton();
-
-//10. Verify that user is navigated to login page
-
-await homePage.navigateLoginPage();
- 
-})
-
-test('Test Case 5: Register User with existing email', async () => {
-
-    //Test data
-let Email = "jjoy@kjr.com";
-let Pw = "test123";
-let Name = "jj";
-    
-//1. Launch Browser
-const browser = await chromium.launch();
-//Launch New Page
- const page = await browser.newPage();
-
- const homePage = new HomePage(page);
- const signupLogin = new SignupLoginPage(page);
-
- //2. Navigate to url 'http://automationexercise.com'
- await homePage.navigateHomePage();
-
-//3. Verify that home page is visible successfully
-await homePage.verifyHomePageLaunched();
-
-//4. click on SignUp/LogIn option 
-await homePage.clickSignupLogin();
-
-//5. Verify 'New User Signup!' is visible
-await signupLogin.verifyNewUserSignuptext();
-
-//6. Enter name and already registered email address
-await signupLogin.enterName(Name);
-await signupLogin.enterEmailAddress(Email);
-
-//7. Click Signup button
-await signupLogin.clickSignupButton();
-
-//8.Verify error 'Email Address already exist' is visible
-await signupLogin.verifySignupError();
-
-})
-
-test('Test Case 7: Verify Test Cases Page', async () => {
-
-    
-//1. Launch Browser
-const browser = await chromium.launch();
-//Launch New Page
- const page = await browser.newPage();
-
- const homePage = new HomePage(page);
- const signupLogin = new SignupLoginPage(page);
- //const testCases = new TestcasesPage(page);
-
- //2. Navigate to url 'http://automationexercise.com'
- await homePage.navigateHomePage();
-
-//3. Verify that home page is visible successfully
-await homePage.verifyHomePageLaunched();
-
-//4.Click on Test cases button
-await signupLogin.clickTestCases();
-
-//5. Verify user is navigated to test cases page successfully
-await signupLogin.navigateTestcasePage();
-//await testCases.getTitle();
-await signupLogin.verifyTestLogo();
-
-})
-
-test.only('Test Case 8: Verify All Products and product detail page', async () => {
-
-    
-    //1. Launch Browser
-    const browser = await chromium.launch();
-    //Launch New Page
-     const page = await browser.newPage();
-    
-     const homePage = new HomePage(page);
-     const signupLogin = new SignupLoginPage(page);
-     const prodPage = new ProductPage(page);
-  
-     //2. Navigate to url 'http://automationexercise.com'
-     await homePage.navigateHomePage();
-    
-    //3. Verify that home page is visible successfully
-    await homePage.verifyHomePageLaunched();
-    
-    //4.Click on Product button
-    await prodPage.clickProductsButton();
-    
-    //5. Verify user is navigated to ALL PRODUCTS page successfully
-   
-   await prodPage.navigateProductPage();
-
-    //6.The products list is visible
-
-
-    //7.Click on 'View Product' of first product
-
-   await prodPage.clickFirstProduct();
-   await prodPage.verifyFirstProduct();
-   await page.pause(3000);
-
-    //9.verify that detail detail is visible 
-    awa
-//update code here
-
-    })
-
-    test.only('Test Case 9: Search Product', async () => {
-
-        
-
+    test('Test Case 9: Search Product', async () => {
         let itemName = "dress";
-        //1. Launch Browser
-        const browser = await chromium.launch();
-        //Launch New Page
-         const page = await browser.newPage();
-         const homePage = new HomePage(page);
-         const searchProd = new SearchProductPage(page);
-      
-         //2. Navigate to url 'http://automationexercise.com'
-         await homePage.navigateHomePage();
         
-        //3. Verify that home page is visible successfully
-        await homePage.verifyHomePageLaunched();
-        
-        //4.Click on Product button
         await searchProd.clickProductsButton();
-        
-        //5. Verify user is navigated to ALL PRODUCTS page successfully
-       
-       await searchProd.navigateProductPage();
-       
-       //6.Enter product name in search input and click search button
-      await searchProd.enterSearch()
-      
- 
-       //7.Verify 'Searched products' is visible
+        await searchProd.navigateProductPage();
+        await searchProd.enterSearch(itemName);
         await searchProd.verifyLabel();
+        await searchProd.verifyAllProductsAreVisible();
+    });
 
-       //8.Verify all the products related to search are visible
-       await searchProd.verifyAllProductsAreVisible();
-      
-    
-
-    })
-
-    test.only('Test Case 10:Verify subscription in Home page', async () => {
-
+    test('Test Case 10: Verify Subscription in Home Page', async () => {
+        let emailId = "test@test.com";
         
-        let emailId = "test@test.com"
- 
-        //1. Launch Browser
-        const browser = await chromium.launch();
-        //Launch New Page
-         const page = await browser.newPage();
-        
-         const homePage = new HomePage(page);
-         const subscribeHome = new SubscriptionHomePage(page);
-      
-         //2. Navigate to url 'http://automationexercise.com'
-         await homePage.navigateHomePage();
-        
-        //3. Verify that home page is visible successfully
-        await homePage.verifyHomePageLaunched();
-        
-        //4.Scroll down to footer
-          await subscribeHome.scrollToFooter();
-
-        //5.verify text 'SUBSCRIPTION'
+        await subscribeHome.scrollToFooter();
         await subscribeHome.verifySubscribeLabel();
+        await subscribeHome.enterEmail(emailId);
+        await subscribeHome.verifySuccessMessage();
+    });
 
-
-        //6.Enter email address in input and click arrow button
-          await  subscribeHome.enterEmail(emailId);
-
-        //7.Verify success message 'You have been successfully subscribed !' is visible
-         await subscribeHome.verifySuccessMessage();
-
-
-    })
-    test.only('Test Case 11:Verify subscription in Cart page', async () => {
-
+    test('Test Case 11: Verify Subscription in Cart Page', async () => {
+        let emailId = "test1@test.com";
         
-        let emailId = "test1@test.com"
- 
-        //1. Launch Browser
-        const browser = await chromium.launch();
-        //Launch New Page
-         const page = await browser.newPage();
-        
-         const homePage = new HomePage(page);
-         const subscribeHome = new SubscriptionHomePage(page);
-      
-         //2. Navigate to url 'http://automationexercise.com'
-         await homePage.navigateHomePage();
-        
-        //3. Verify that home page is visible successfully
-        await homePage.verifyHomePageLaunched();
-        
-        //4.Click Cart button
-         await subscribeHome.clickCartButton();
-      
-        //6.verify text 'SUBSCRIPTION'
+        await subscribeHome.clickCartButton();
         await subscribeHome.verifySubscribeLabel();
-
-
-        //6.Enter email address in input and click arrow button
-          await  subscribeHome.enterEmail(emailId);
-          
-
-        //7.Verify success message 'You have been successfully subscribed !' is visible
-         await subscribeHome.verifySuccessMessage();
-
-
-    })
+        await subscribeHome.enterEmail(emailId);
+        await subscribeHome.verifySuccessMessage();
+    });
+});
