@@ -1,100 +1,46 @@
-const {expect} = require('@playwright/test');
-//const testdata = require('../testdata.json')
 exports.SignupLoginPage = class SignupLoginPage {
-
-constructor(page)
-{
-    this.page = page;
-    this.NewUserText = page.getByText("New User Signup!");
-    this.nameInput  = page.locator('//div[@class="signup-form"]//input[@type = "text"]'); 
-    this.emailInput = page.locator('//div[@class="signup-form"]//input[@type = "email"]'); 
-    this.signupButton = page.locator('.btn.btn-default').filter({hasText: "Signup"}); 
-
-    this.loginToYourAccountText = page.getByText("Login to your account");
-    this.emailLogin = page.locator('//*[@class="login-form"]//*[@type = "email"]');
-    this.pwLogin = page.locator('//*[@class="login-form"]//*[@type = "password"]');
-    this.loginButton = page.getByRole('Button', {name:"Login"});
-    this.errorMessage = page.locator("//p[normalize-space()='Your email or password is incorrect!']")
-     //updated locators for logout page
-    this.logoutButton = page.locator(".fa.fa-lock");  //classname locator of logout button
-    this.signupErrorMessage = page.locator("//p[normalize-space()='Email Address already exist!']")  //xpath of error message in signup
-    this.testcasesLink = page.getByRole('link', { name: ' Test Cases' })   //relative cssSelector of testcases link
-    this.searchLogo = page.getByRole('heading', { name: 'Test Cases', exact: true })
-
-}
-
-async verifyNewUserSignuptext()
-{
-    await expect(this.NewUserText).toBeVisible();
-}
-
-async enterName(name)
-{
-    await this.nameInput.fill(name);
-}
-
-async enterEmailAddress(email)
-{
-    await this.emailInput.fill(email);
-}
-
-async clickSignupButton()
-{
-  //  await expect(this.signupButton).toBeEnabled();
-    await this.signupButton.click();
-}
-
-async verifyLoginToYourAccountText()
-{
-    await expect(this.loginToYourAccountText).toBeVisible();
-}
-
-async fillLoginEmail(email)
-{
-    await this.emailLogin.fill(email);
-}
-
-async fillLoginPassword(pw)
-{
-    await this.pwLogin.fill(pw);
-
-}
-
-async clickLoginButton()
-{
-    await expect(this.loginButton).toBeEnabled();
-    await this.loginButton.click();
-}
-
-async verifyErrorMessage(){
-    await expect(this.errorMessage).toBeVisible();
-}
-
-async clickLogoutButton()
-{
-    await this.logoutButton.click();
-}
-
-async verifySignupError()
-{
-    await expect(this.signupErrorMessage).toBeVisible();
-}
-
-async clickTestCases()
-{
-    await this.testcasesLink.click();
-
-}
-
-async navigateTestcasePage()
-{
-    await this.page.goto('https://automationexercise.com/test_cases'); 
+    constructor(page) {
+      this.page = page;
+  
+      // Locators for elements on the page
+      this.signupLogin = page.locator('text= Signup / Login');
+      this.loginText = page.locator('h2');
+      this.signupEmail = page.locator('input[data-qa="signup-email"]');  // Target the signup email field
+      this.loginEmail = page.locator('input[data-qa="login-email"]');  // Target the login email field
+      this.signupPassword = page.locator('input[name="password"]');  // Locator for password input
+      this.signupButton = page.locator('button[type="submit"]');
+      this.errorMessage = page.locator('.error-message');
     }
-
-    async verifyTestLogo()
-{
-    await expect(this.searchLogo).toBeVisible();
-}
-
-
-}
+  
+    // Method to verify visibility of a Locator
+    async verifyVisibility(locator) {
+      await expect(locator).toBeVisible();  // Ensure the locator is visible
+    }
+  
+    // Method to enter user details for signup/login
+    async enterUserDetails(email, password, isLogin = false) {
+      const emailLocator = isLogin ? this.loginEmail : this.signupEmail; // Decide which locator to use based on login/signup
+      console.log('Entering user details - Email:', email, 'Password:', password);  // Debugging log
+      await emailLocator.waitFor({ state: 'visible' });  // Wait for the email input field to be visible
+      await emailLocator.fill(email);  // Fill the email input
+  
+      await this.signupPassword.waitFor({ state: 'visible' });  // Wait for the password input field to be visible
+      await this.signupPassword.fill(password);  // Fill the password input
+    }
+  
+    // Verify if error message is visible
+    async verifyErrorMessage() {
+      await this.verifyVisibility(this.errorMessage);
+    }
+  
+    // Verify visibility of the 'Login to Your Account' text
+    async verifyLoginToYourAccountText() {
+      await this.verifyVisibility(this.loginText);
+    }
+  
+    // Verify visibility of Signup / Login button
+    async verifySignupLoginVisibility() {
+      await this.verifyVisibility(this.signupLogin);
+    }
+  };
+  

@@ -1,111 +1,89 @@
 const { test, expect } = require('@playwright/test');
-const {chromium} = require('playwright');
+const { chromium } = require('playwright');
 const { HomePage } = require('./HomePage');
 const { SignupLoginPage } = require('./SignupLoginPage');
-const {CreateAccountPage} = require('./CreateAccountPage');
+const { CreateAccountPage } = require('./CreateAccountPage');
 
-test('Test Case 1: Register User ', async () => {
+test('Test Case 1: Register User', async () => {
+  // Test Data
+  const userData = {
+    name: "testjj", 
+    email: "testjj@gmail.com",
+    password: "jjpw1",
+    dob: { day: "11", month: "January", year: "1975" },
+    title: "Mrs.",
+    firstName: "Jess",
+    lastName: "j",
+    company: "KJR",
+    address1: "Collin Square",
+    address2: "",
+    country: "Australia",
+    state: "Victoria",
+    city: "Melbourne",
+    zipCode: "3000",
+    mobileNumber: "0420000000"
+  };
 
-     //Test data
-    let Name = "VR001";
-    let Email = "VR001@gmail.com";
-    let Pw = "VRpw01";
-    let Day = "28"; 
-    let Month = "November"; 
-    let Year = "1998";
-    let Title = "Mrs."; // or "Mrs.""
-    let Fname = "Jhon";
-    let Lname = "Stark";
-    let Company = "KJR";
-    let Address1 = "Collin Square";
-    let Address2 = "";
-    let Country = "Australia";
-    let State = "Victoria";
-    let City = "Melboune";
-    let Zipcode = "3000";
-    let Mobilenumber = "0421567345";
+  // Launch browser and page
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
 
-    //1. Launch Browser
-    const browser = await chromium.launch();
-    //Launch New Page
-     const page = await browser.newPage();
+  // Initialize page objects
+  const homePage = new HomePage(page);
+  const signupLoginPage = new SignupLoginPage(page);
+  const createAccountPage = new CreateAccountPage(page);
 
-    const homePage = new HomePage(page);
-    const signupLogin = new SignupLoginPage(page);
-    const createAccountPage = new CreateAccountPage(page);
+  // Step 1: Navigate to homepage
+  await homePage.navigateHomePage();
+  await homePage.verifyHomePageLaunched();
 
+  // Step 2: Click on Signup/Login
+  await homePage.clickSignupLogin();
+ // await signupLoginPage.verifyNewUserSignupText();
 
-    //2. Navigate to URL home page
-    await homePage.navigateHomePage(); 
+  // Step 3: Enter User Details for Signup
+  await signupLoginPage.enterName(userData.name);
+  await signupLoginPage.enterEmailAddress(userData.email);
+  await signupLoginPage.clickSignupButton();
 
-    //3. Verify homepage is visible successfully 
-    await homePage.verifyHomePageLaunched();
+  // Step 4: Verify account creation form and fill details
+  await createAccountPage.verifyenterAccountInformationText();
+  await createAccountPage.selectTitle(userData.title);
+  await createAccountPage.fillName(userData.name);
+  await createAccountPage.fillEmail(userData.email);
+  await createAccountPage.fillPassword(userData.password);
+  await createAccountPage.fillDateOfBirth(userData.dob.day, userData.dob.month, userData.dob.year);
 
-    //4. click on SignUp/LogIn option 
-    await homePage.clickSignupLogin();
+  // Step 5: Select checkboxes
+  await createAccountPage.selectCheckbox1();
+  await createAccountPage.selectCheckbox2();
 
-    //5. Verify 'New User Signup!' is visible
-    await signupLogin.verifyNewUserSignuptext();
+  // Step 6: Fill Address Details
+  await createAccountPage.fillFirstname(userData.firstName);
+  await createAccountPage.fillLastname(userData.lastName);
+  await createAccountPage.fillCompany(userData.company);
+  await createAccountPage.fillAddress1(userData.address1);
+  await createAccountPage.fillAddress2(userData.address2);
+  await createAccountPage.fillCountry(userData.country);
+  await createAccountPage.fillState(userData.state);
+  await createAccountPage.fillCity(userData.city);
+  await createAccountPage.fillZipcode(userData.zipCode);
+  await createAccountPage.fillMobilenumber(userData.mobileNumber);
 
-    //6.Enter name and email address
-    await signupLogin.enterName(Name);
-    await signupLogin.enterEmailAddress(Email);
+  // Step 7: Click 'Create Account' button and verify account creation
+  await createAccountPage.clickCreateButton();
+  await createAccountPage.verifyAccountCreatedText();
 
-    //7. Click 'Signup' button
-    await signupLogin.clickSignupButton();
+  // Step 8: Click 'Continue' and verify user login
+  await createAccountPage.clickContinueButton();
+  await homePage.verifyUserLogin(userData.name);
 
-    //8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
-    await createAccountPage.verifyenterAccountInformationText();
+/* // Step 9: Delete Account and verify deletion
+  await homePage.clickDeleteAccountButton();
+  await expect(page.getByText("Account Deleted!")).toBeVisible();
+  await page.locator('.btn.btn-primary').click();*/
 
-    //9.Fill details: Title, Name, Email, Password, Date of birth
-    await createAccountPage.selectTitle(Title);
-    await createAccountPage.fillName(Name);
-    await createAccountPage.fillEmail(Email);
-    await createAccountPage.fillPassword(Pw);
-    await createAccountPage.fillDateOfBirth(Day,Month,Year);
-
-    //10.Select checkbox 'Sign up for our newsletter!'
-     await createAccountPage.selectCheckbox1();
-
-     //11.Select checkbox 'Receive special offers from our partners!'
-     await createAccountPage.selectCheckbox2();
-
-     //12.  Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number
-     await createAccountPage.fillFirstname(Fname);
-     await createAccountPage.fillLastname(Fname);
-     await createAccountPage.fillcompany(Company);
-     await createAccountPage.fillAddress1(Address1);
-     await createAccountPage.fillAddress2(Address2);
-     await createAccountPage.fillCountry(Country);
-     await createAccountPage.fillState(State);
-     await createAccountPage.fillCity(City);
-     await createAccountPage.fillZipcode(Zipcode);
-     await createAccountPage.fillMobilenumber(Mobilenumber);
-
-     //13.Click 'Create Account button'
-     await createAccountPage.clickCreateButton();
-
-     //14.Verify that 'ACCOUNT CREATED!' is visible
-     await createAccountPage.verifyAccountCreatedText();
-
-     //15.Click 'Continue' button
-     await createAccountPage.clickcontinueButton();
-
-     //16.Verify that 'Logged in as username' is visible
-     await homePage.VerifyUserLogin(Name);
-
-     //17. Click 'Delete Account' button
-     await homePage.clickDeleteAccountButton();
-
-     //18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-     await expect(page.getByText("Account Deleted!")).toBeVisible();
-     await page.locator('.btn.btn-primary').click();
-
-})
-
-
-
-
-  
-
-
+  // Close browser after test
+  await page.close();
+  await browser.close();
+});

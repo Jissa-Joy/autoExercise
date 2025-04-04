@@ -1,0 +1,19 @@
+[
+    {
+      "name": "testjj",
+      "email": "testjj@gmail.com",
+      "password": "jjpw1",
+      "dob": { "day": "11", "month": "January", "year": "1975" },
+      "title": "Mrs.",
+      "firstName": "Jess",
+      "lastName": "j",
+      "company": "KJR",
+      "address1": "Collin Square",
+      "address2": "",
+      "country": "Australia",
+      "state": "Victoria",
+      "city": "Melbourne",
+      "zipCode": "3000",
+      "mobileNumber": "0420000000"
+    }
+  ]

@@ -1,156 +1,85 @@
-const {expect} = require('@playwright/test');
+const { expect } = require('@playwright/test');
+
 exports.CreateAccountPage = class CreateAccountPage {
+  constructor(page) {
+    this.page = page;
 
-constructor(page){
+    this.locators = {
+      accountInformationText: page.getByText("Enter Account Information"),
+      genderMale: page.locator('#id_gender1'),
+      genderFemale: page.locator('#id_gender2'),
+      nameInput: page.locator('#name'),
+      emailInput: page.locator('#email'),
+      password: page.locator('#password'),
+      days: page.locator('#days'),
+      months: page.locator('#months'),
+      years: page.locator('#years'),
+      checkbox1: page.getByLabel("Sign up for our newsletter!"),
+      checkbox2: page.getByLabel("Receive special offers from our partners!"),
+      fname: page.locator('#first_name'),
+      lname: page.locator('#last_name'),
+      company: page.locator('#company'),
+      address1: page.locator('#address1'),
+      address2: page.locator('#address2'),
+      country: page.locator('#country'),
+      state: page.locator('#state'),
+      city: page.locator('#city'),
+      zipcode: page.locator('#zipcode'),
+      mobile: page.locator('#mobile_number'),
+      createButton: page.getByRole('Button', { name: "Create Account" }),
+      accountCreatedText: page.getByText("Account Created!"),
+      continueButton: page.locator('.btn.btn-primary')
+    };
+  }
 
-        this.page = page;
-        this.enterAccountInformationText = page.getByText("Enter Account Information");
-        this.genderMale = page.locator('//*[@id="id_gender1"]');
-        // this.genderMale = page.locator('#id_gender1');    //
-        this.genderFemale = page.locator('//*[@id="id_gender2"]');
-        this.nameInput = page.locator('//*[@id="name"]');
-        this.emailInput = page.locator('//*[@id="email"]');
-        this.password = page.locator("//*[@id='password']");
-        this.days = page.locator("//*[@id='days']");
-        this.months = page.locator("//*[@id='months']");
-        this.years = page.locator("//*[@id='years']");
+  async verifyVisibility(element) {
+    await expect(element).toBeVisible();
+  }
 
-        this.checkbox1 = page.getByLabel("Sign up for our newsletter!");
-        this.checkbox2 = page.getByLabel("Receive special offers from our partners!");
-
-        this.fname = page.locator("//*[@id='first_name']");
-        this.lname = page.locator("//*[@id='last_name']");
-        this.company = page.locator("//*[@id='company']");
-        this.address1 = page.locator("//*[@id='address1']");
-        this.address2 = page.locator("//*[@id='address2']");
-        this.country = page.locator("//*[@id='country']");
-        this.state = page.locator("//*[@id='state']");
-        this.city = page.locator("//*[@id='city']");
-        this.zipcode = page.locator("//*[@id='zipcode']");
-        this.mobile = page.locator("//*[@id='mobile_number']");
-        this.createButton = page.getByRole('Button', {name : "Create Account"});
-
-        this.accountCreatedText = page.getByText("Account Created!");
-        this.continueButton = page.locator('.btn.btn-primary');
-}
-
-async verifyenterAccountInformationText()
-{
-    await expect(this.enterAccountInformationText).toBeVisible();
-}
-
-async selectTitle(title)
-{
- if (title !== "Mr."){ 
-    await this.genderFemale.check();
+  async fillField(locator, value) {
+    const inputValue = await locator.inputValue();
+    if (inputValue !== value) {
+      await locator.fill(value);
     }
-    else{
-    await this.genderMale.check();
+  }
+
+  async selectTitle(title) {
+    if (title !== "Mr.") {
+      await this.locators.genderFemale.check();
+    } else {
+      await this.locators.genderMale.check();
     }
-}
+  }
 
-async fillName(name)
-{
-    const inputValueName  = await this.nameInput.inputValue(); 
-    if (inputValueName !== name){
-        await this.nameInput.fill(name);
-        }
-}
+  async fillUserDetails(userData) {
+    await this.fillField(this.locators.nameInput, userData.name);
+    await this.fillField(this.locators.emailInput, userData.email);
+    await this.fillField(this.locators.password, userData.password);
+    await this.locators.days.selectOption(userData.dob.day);
+    await this.locators.months.selectOption(userData.dob.month);
+    await this.locators.years.selectOption(userData.dob.year);
+    await this.locators.checkbox1.check();
+    await this.locators.checkbox2.check();
+  }
 
-async fillEmail(email)
-{
-    await expect(this.emailInput).toHaveValue(email); 
-}
+  async fillAddressDetails(userData) {
+    await this.fillField(this.locators.fname, userData.firstName);
+    await this.fillField(this.locators.lname, userData.lastName);
+    await this.fillField(this.locators.company, userData.company);
+    await this.fillField(this.locators.address1, userData.address1);
+    await this.fillField(this.locators.address2, userData.address2);
+    await this.locators.country.selectOption(userData.country);
+    await this.fillField(this.locators.state, userData.state);
+    await this.fillField(this.locators.city, userData.city);
+    await this.fillField(this.locators.zipcode, userData.zipCode);
+    await this.fillField(this.locators.mobile, userData.mobileNumber);
+  }
 
-async fillPassword(pw)
-{
-    await this.password.fill(pw);
-}
+  async clickCreateButton() {
+    await this.locators.createButton.click();
+  }
 
-async fillDateOfBirth(day,month,year)
-{
-    await this.days.selectOption(day);
-    await this.months.selectOption(month);
-    await this.years.selectOption(year);
-
-}
-
-async selectCheckbox1()
-{
-    await this.checkbox1.check();
-}
-
-async selectCheckbox2()
-{
-    await this.checkbox2.check();
-}
-async fillFirstname(fname)
-{
-    await this.fname.fill(fname); 
-}
-async fillLastname(lname)
-{
-    await this.lname.fill(lname); 
-}
-async fillcompany(company)
-{
-    await this.company.fill(company);
-}
-async fillAddress1(add1)
-{
-    await this.address1.fill(add1);
-}
-async fillAddress2(add2)
-{
-    await this.address2.fill(add2);
-}
-async fillCountry(country)
-{
-    await this.country.selectOption(country); 
-}
-async fillState(state)
-{
-    await this.state.fill(state);  
-}
-async fillCity(city)
-{
-    await this.city.fill(city);  
-}
-async fillZipcode(zip)
-{
-    await this.zipcode.fill(zip); 
-}
-async fillMobilenumber(mobile)
-{
-    await this.mobile.fill(mobile); 
-}
-async clickCreateButton()
-{
-    await expect(this.createButton).toBeEnabled();
-    await this.createButton.click(); 
-}
-
-async verifyAccountCreatedText()
-{
-    await expect(this.accountCreatedText).toBeVisible();
-}
-
-async clickcontinueButton()
-{
-    await expect(this.continueButton).toBeEnabled();
-    await this.continueButton.click();
-}
-
-}
-
-
-
-
-
-
-      
- 
-       
- 
-
-
+  async clickContinueButton() {
+    await this.locators.continueButton.click();
+  }
+};
