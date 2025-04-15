@@ -5,6 +5,8 @@ test('Verify Title', async ({ page }) => {
     await expect(page).toHaveTitle("Practice E-Commerce Site – SDET Unicorns");
     await page.goto("https://practice.sdetunicorns.com/about/");
     await expect(page).toHaveTitle("About – Practice E-Commerce Site");
+    console.log('testing work');
+    console.log('adding assertion');
 })
 test('Verify Get started', async ({ page }) => {
     await page.goto("https://practice.sdetunicorns.com/"); //GO to URL
